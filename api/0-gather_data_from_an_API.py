@@ -1,9 +1,19 @@
 #!/usr/bin/python3
+"""Gather data from an api"""
 import requests
 import sys
 
-
 def fetch_employee_todo_list(employee_id):
+    """
+    Fetches the TODO list for a given employee ID.
+
+    Args:
+        employee_id (int): The ID of the employee.
+
+    Returns:
+        tuple: A tuple containing user data (dict) and TODO list (list).
+               If the employee is not found, returns (None, None).
+    """
     base_url = "https://jsonplaceholder.typicode.com/users"
     user_url = f"{base_url}/{employee_id}"
 
@@ -25,6 +35,12 @@ def fetch_employee_todo_list(employee_id):
 
 
 def display_todo_progress(employee_id):
+    """
+    Displays the progress of completed tasks for a given employee.
+
+    Args:
+        employee_id (int): The ID of the employee.
+    """
     user_data, todo_list = fetch_employee_todo_list(employee_id)
 
     if user_data is None or todo_list is None:
