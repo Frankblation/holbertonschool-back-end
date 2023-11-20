@@ -2,6 +2,7 @@
 import requests
 import sys
 
+
 def fetch_employee_todo_list(employee_id):
     base_url = "https://jsonplaceholder.typicode.com/users"
     user_url = f"{base_url}/{employee_id}"
@@ -22,6 +23,7 @@ def fetch_employee_todo_list(employee_id):
 
     return user_data, todo_list
 
+
 def display_todo_progress(employee_id):
     user_data, todo_list = fetch_employee_todo_list(employee_id)
 
@@ -32,10 +34,13 @@ def display_todo_progress(employee_id):
     completed_tasks = [task for task in todo_list if task["completed"]]
     total_tasks = len(todo_list)
 
-    print(f"Employee {employee_name} is done with tasks ({len(completed_tasks)}/{total_tasks}):")
+    print(
+        f"Employee {employee_name} is done with tasks({len(completed_tasks)}/\
+                                                      {total_tasks}): ")
 
     for task in completed_tasks:
         print(f"\t{task['title']}")
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
