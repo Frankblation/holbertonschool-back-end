@@ -1,14 +1,25 @@
 #!/usr/bin/python3
-"""Gather data from an api"""
+"""
+Gather data from an API.
+
+Usage:
+    python3 0-gather_data_from_an_API.py <employee_id>
+
+Arguments:
+    <employee_id>: An integer representing the employee's ID.
+
+Example:
+    python3 0-gather_data_from_an_API.py 2
+"""
+
 import sys
 import requests
 
 
 if __name__ == "__main__":
-    """Fetches the TODO list for a given employee ID."""
     if len(sys.argv) != 2 or not sys.argv[1].isdigit():
         print("Usage: python3 0-gather_data_from_an_API.py <employee_id>")
-        sys.exit(1)
+        raise SystemExit("Error: Invalid or missing employee_id")
 
     employee_id = int(sys.argv[1])
     base_url = "https://jsonplaceholder.typicode.com"
@@ -25,7 +36,7 @@ if __name__ == "__main__":
     completed_tasks = [task for task in todo_data if task["completed"]]
 
     # Display the information
-    print(f"Employee {user_data['name']} is done with tasks(
-        {len(completed_tasks)}/{len(todo_data)}): ")
+    print(f"Employee {user_data['name']} is done with tasks("
+          f"{len(completed_tasks)}/{len(todo_data)}): ")
     for task in completed_tasks:
         print(f"\t{task['title']}")
