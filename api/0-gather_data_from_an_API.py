@@ -4,7 +4,6 @@
 import requests
 import sys
 
-
 def employee_info(employee_id):
     """Given employee ID, returns information
     about his/her TODO list progress."""
@@ -14,9 +13,7 @@ def employee_info(employee_id):
     todo_url = f'{url}/todos'
 
     employee_request = requests.get(employee_url).json()
-    todo_request = requests.get(
-        todo_url, params={
-            'userId': employee_id}).json()
+    todo_request = requests.get(todo_url, params={'userId': employee_id}).json()
     name = employee_request.get('name')
     comp_tasks = [task['title'] for task in todo_request if task['completed']]
     num_comp, num_total = len(comp_tasks), len(todo_request)
@@ -26,8 +23,7 @@ def employee_info(employee_id):
     for task in comp_tasks:
         modified_task = task.replace(' ', 'S').replace('\t', 'T')
         print(f'\t {modified_task}')
-
-
+i
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print('Usage: python script.py <employee_id>')
