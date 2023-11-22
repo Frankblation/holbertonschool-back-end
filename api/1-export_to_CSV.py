@@ -63,6 +63,7 @@ def get_user_tasks(employee_id):
 
 
 if __name__ == "__main__":
+    """Main entry point. Usage: python script.py <employee_id>"""
     if len(sys.argv) != 2 or not sys.argv[1].isdigit():
         print('Usage: python script.py <employee_id>')
         sys.exit(1)
