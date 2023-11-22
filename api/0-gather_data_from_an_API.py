@@ -1,42 +1,37 @@
 #!/usr/bin/python3
-"""
-Gather data from an API.
+"""Python script that for a given employee ID, returns information
+about his/her TODO list progress."""
 
-Usage:
-    python3 0-gather_data_from_an_API.py <employee_id>
-
-Arguments:
-    <employee_id>: An integer representing the employee's ID.
-
-Example:
-    python3 0-gather_data_from_an_API.py 2
-"""
-
-import sys
 import requests
+import sys
+
+
+def employee_info(employee_id):
+    """Given employee ID, returns information
+    about his/her TODO list progress."""
+
+    url = 'https://jsonplaceholder.typicode.com'
+    employee_url = f'{url}/users/{employee_id}'
+    todo_url = f'{url}/todos'
+
+    employee_request = requests.get(employee_url).json()
+    todo_request = requests.get(
+        todo_url, params={
+            'userId': employee_id}).json()
+    name = employee_request.get('name')
+    comp_tasks = [task['title'] for task in todo_request if task['completed']]
+    num_comp, num_total = len(comp_tasks), len(todo_request)
+
+    print(f'Employee {name} is done with tasks ({num_comp}/{num_total}):')
+
+    for task in comp_tasks:
+        print(f'\t {task}')
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2 or not sys.argv[1].isdigit():
-        print("Usage: python3 0-gather_data_from_an_API.py <employee_id>")
-        raise SystemExit("Error: Invalid or missing employee_id")
+    if len(sys.argv) != 2:
+        print('Usage: python script.py <employee_id>')
+        sys.exit(1)
 
     employee_id = int(sys.argv[1])
-    base_url = "https://jsonplaceholder.typicode.com"
-
-    # Fetch user data
-    user_response = requests.get(f"{base_url}/users/{employee_id}")
-    user_data = user_response.json()
-
-    # Fetch TODO list for the user
-    todo_response = requests.get(f"{base_url}/todos?userId={employee_id}")
-    todo_data = todo_response.json()
-
-    # Filter completed tasks
-    completed_tasks = [task for task in todo_data if task["completed"]]
-
-    # Display the information
-    print(f"Employee {user_data['name']} is done with tasks("
-          f"{len(completed_tasks)}/{len(todo_data)}): ")
-    for task in completed_tasks:
-        print(f"\t{task['title']}")
+    employee_info(employee_id)
