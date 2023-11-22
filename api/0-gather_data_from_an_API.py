@@ -1,8 +1,15 @@
+#!/usr/bin/python3
+"""
+Gather Data From An API Module
+"""
 import requests
 import sys
 
 
 def get_employee_todo_progress(employee_id):
+    """
+    Retrieve employee TODO list progress from the API.
+    """
     url = "https://jsonplaceholder.typicode.com"
     employee_url = f"{url}/users/{employee_id}"
     todo_url = f"{url}/todos"
