@@ -6,6 +6,7 @@ Gather Data From An API Module
 import requests
 from sys import argv
 
+
 def get_employee_todo_progress(employee_id):
     """
     Retrieve employee TODO list progress from the API.
@@ -17,7 +18,8 @@ def get_employee_todo_progress(employee_id):
     employee_name = employee_data.get("name")
 
     # Fetch employee's TODO list
-    todo_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    todo_url = f"https://jsonplaceholder.typicode.com/todos?userId=\
+        {employee_id}"
     todo_data = requests.get(todo_url).json()
 
     # Count completed tasks
@@ -26,9 +28,12 @@ def get_employee_todo_progress(employee_id):
     total_tasks = len(todo_data)
 
     # Display information
-    print(f"Employee {employee_name} is done with tasks({num_completed_tasks}/{total_tasks}):")
+    print(
+        f"Employee {employee_name}\
+        is done with tasks({num_completed_tasks}/{total_tasks}):")
     for task in completed_tasks:
         print(f"{' ' * 5}{task['title']}")
+
 
 if __name__ == "__main__":
     if len(argv) != 2 or not argv[1].isdigit():
