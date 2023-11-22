@@ -1,42 +1,44 @@
-#!/usr/bin/python3
-"""
-Gather Data From An API Module
-"""
-
 import requests
-from sys import argv
+import sys
 
 
 def get_employee_todo_progress(employee_id):
-    """
-    Retrieve employee TODO list progress from the API.
-    """
-    url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    url = "https://jsonplaceholder.typicode.com"
+    employee_url = f"{url}/users/{employee_id}"
+    todo_url = f"{url}/todos"
 
-    # Fetch employee data
-    employee_data = requests.get(url).json()
-    employee_name = employee_data.get("name")
+    # Make API requests and check for success
+    try:
+        employee_data = requests.get(employee_url).json()
+        employee_name = employee_data.get("name")
 
-    # Fetch employee's TODO list
-    todo_url = f"https://jsonplaceholder.typicode.com/todos?userId=\
-        {employee_id}"
-    todo_data = requests.get(todo_url).json()
+        todo_data = requests.get(todo_url,
+                                 params={"userId": employee_id}).json()
 
-    # Count completed tasks
-    completed_tasks = [task for task in todo_data if task["completed"]]
-    num_completed_tasks = len(completed_tasks)
-    total_tasks = len(todo_data)
+        if not isinstance(todo_data, list):
+            raise ValueError("Invalid response from the TODO API")
 
-    # Display information
-    print(f"Employee {employee_name} is done with tasks({num_completed_tasks}/\
-          {total_tasks}):")
+    except requests.RequestException as e:
+        print(f"Error fetching data from the API: {e}")
+        sys.exit(1)
+    except ValueError as e:
+        print(f"Error processing API response: {e}")
+        sys.exit(1)
+
+    completed_tasks = [t["title"] for t in todo_data if t["completed"]]
+    number_done = len(completed_tasks)
+    number_total = len(todo_data)
+
+    print("Employee {} is done with tasks({}/{}):"
+          .format(employee_name, number_done, number_total))
     for task in completed_tasks:
-        print(f"{' ' * 5}{task['title']}")
+        print(f"\t {task}")
 
 
 if __name__ == "__main__":
-    if len(argv) != 2 or not argv[1].isdigit():
-        print("Usage: python3 0-gather_data_from_an_API.py <employee_id>")
-    else:
-        employee_id = int(argv[1])
-        get_employee_todo_progress(employee_id)
+    if len(sys.argv) != 2 or not sys.argv[1].isdigit():
+        print("Usage: python3 script_name.py <employee_id>")
+        sys.exit(1)
+
+    employee_id = int(sys.argv[1])
+    get_employee_todo_progress(employee_id)
