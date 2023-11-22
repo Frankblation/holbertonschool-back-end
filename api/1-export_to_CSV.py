@@ -43,8 +43,8 @@ def export_to_csv(employee_id, tasks):
         csv_writer.writerows(tasks_list)
 
     print(f'Data exported to {filename}')
-    print(f'Number of tasks in CSV: {"OK" if len(tasks) == len(tasks_list)\
-        else "Incorrect"}')
+    print(f'Number of tasks in CSV:\
+           {"OK" if len(tasks) == len(tasks_list) else "Incorrect"}')
 
 
 def get_user_tasks(employee_id):
