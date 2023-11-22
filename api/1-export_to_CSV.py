@@ -39,11 +39,12 @@ def export_to_csv(employee_id, tasks):
                 "USERNAME",
                 "TASK_COMPLETED_STATUS",
                 "TASK_TITLE"])
+        csv_writer.writeheader()  # Write CSV header
         csv_writer.writerows(tasks_list)
 
     print(f'Data exported to {filename}')
-    print(
-        f'Number of tasks in CSV: {"OK" if len(tasks) == 20 else "Incorrect"}')
+    print(f'Number of tasks in CSV: {"OK" if len(tasks) == len(tasks_list)\
+        else "Incorrect"}')
 
 
 def get_user_tasks(employee_id):
@@ -51,13 +52,18 @@ def get_user_tasks(employee_id):
 
     url = f'https://jsonplaceholder.typicode.com/todos'
     params = {'userId': employee_id}
-    todo_request = requests.get(url, params=params).json()
+
+    try:
+        todo_request = requests.get(url, params=params).json()
+    except requests.RequestException as e:
+        print(f"Error fetching tasks from the API: {e}")
+        sys.exit(1)
 
     return todo_request
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 2 or not sys.argv[1].isdigit():
         print('Usage: python script.py <employee_id>')
         sys.exit(1)
 
