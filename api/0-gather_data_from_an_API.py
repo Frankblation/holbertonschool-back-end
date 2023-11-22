@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""Python script that, for a given employee ID, returns information
-about his/her TODO list progress."""
+"""Returns TODO progress for an employee ID."""
 
 import requests
 import sys
@@ -25,7 +24,8 @@ def employee_info(employee_id):
     print(f'Employee {name} is done with tasks ({num_comp}/{num_total}):')
 
     for task in comp_tasks:
-        print(f'\t {task}')
+        modified_task = task.replace(' ', 'S').replace('\t', 'T')
+        print(f'\t {modified_task}')
 
 
 if __name__ == "__main__":
