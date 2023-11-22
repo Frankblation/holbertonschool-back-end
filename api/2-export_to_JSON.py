@@ -6,44 +6,30 @@ import requests
 import sys
 
 
-def export_to_json(employee_id, tasks):
+def get_employee_todo_progress(employee_id):
     """Exports TODO progress to a JSON file."""
+    url = "https://jsonplaceholder.typicode.com"
+    employee_url = f"{url}/users/{employee_id}"
+    todo_url = f"{url}/todos"
 
-    user_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}'
-    user_request = requests.get(user_url).json()
-    user_name = user_request.get('username')
+    employee_data = requests.get(employee_url).json()
+    todo_data = requests.get(todo_url, params={"userId": employee_id}).json()
 
-    data = {
-        "USER_ID": [
-            {"task": task['title'], "completed": task['completed'],
-             "username": user_name}
-            for task in tasks
-        ]
-    }
+    employee_name = employee_data.get("username")
+    tasks = []
 
-    filename = f'{employee_id}.json'
+    for task in todo_data:
+        tasks.append({
+            "task": task["title"],
+            "completed": task["completed"],
+            "username": employee_name
+        })
 
-    with open(filename, mode='w') as json_file:
-        json.dump(data, json_file, indent=4)
+    json_file_path = f"{employee_id}.json"
 
-    print(f'Data exported to {filename}')
-
-
-def get_user_tasks(employee_id):
-    """Gets tasks for a given employee ID."""
-
-    url = f'https://jsonplaceholder.typicode.com/todos'
-    params = {'userId': employee_id}
-    todo_request = requests.get(url, params=params).json()
-
-    return todo_request
+    with open(json_file_path, mode='w') as json_file:
+        json.dump({str(employee_id): tasks}, json_file, indent=4)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print('Usage: python script.py <employee_id>')
-        sys.exit(1)
-
-    employee_id = int(sys.argv[1])
-    tasks = get_user_tasks(employee_id)
-    export_to_json(employee_id, tasks)
+    get_employee_todo_progress(int(sys.argv[1]))
