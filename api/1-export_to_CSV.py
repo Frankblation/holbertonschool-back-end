@@ -5,6 +5,7 @@ import csv
 import requests
 import sys
 
+
 def export_to_csv(employee_id, tasks):
     """Exports TODO progress to a CSV file."""
 
@@ -16,12 +17,15 @@ def export_to_csv(employee_id, tasks):
 
     with open(filename, mode='w', newline='') as csv_file:
         csv_writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
-        csv_writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
+        csv_writer.writerow(
+            ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
 
         for task in tasks:
-            csv_writer.writerow([employee_id, user_name, str(task['completed']), task['title']])
+            csv_writer.writerow(
+                [employee_id, user_name, str(task['completed']), task['title']])
 
     print(f'Data exported to {filename}')
+
 
 def get_user_tasks(employee_id):
     """Gets tasks for a given employee ID."""
@@ -31,6 +35,7 @@ def get_user_tasks(employee_id):
     todo_request = requests.get(url, params=params).json()
 
     return todo_request
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
