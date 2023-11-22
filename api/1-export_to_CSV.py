@@ -33,14 +33,17 @@ def export_to_csv(employee_id, tasks):
 
     with open(filename, mode='w', newline='') as csv_file:
         csv_writer = csv.DictWriter(
-            csv_file, fieldnames=["USER_ID", "USERNAME",
-                                  "TASK_COMPLETED_STATUS", "TASK_TITLE"])
-        csv_writer.writeheader()
+            csv_file,
+            fieldnames=[
+                "USER_ID",
+                "USERNAME",
+                "TASK_COMPLETED_STATUS",
+                "TASK_TITLE"])
         csv_writer.writerows(tasks_list)
 
     print(f'Data exported to {filename}')
-    print(f'Number of tasks in CSV:\
-          {"OK" if len(tasks) == 20 else "Incorrect"}')
+    print(
+        f'Number of tasks in CSV: {"OK" if len(tasks) == 20 else "Incorrect"}')
 
 
 def get_user_tasks(employee_id):
