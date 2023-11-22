@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Exports TODO progress for an employee ID to a CSV file."""
+"""Exports TO Do progress for an employee ID to a CSV file."""
 
 import csv
 import requests
@@ -7,7 +7,7 @@ import sys
 
 
 def export_to_csv(employee_id, tasks):
-    """Exports TODO progress to a CSV file."""
+    """Exports TO DO progress to a CSV file."""
 
     user_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}'
     user_request = requests.get(user_url).json()
