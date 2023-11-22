@@ -15,7 +15,8 @@ def export_to_json(employee_id, tasks):
 
     data = {
         "USER_ID": [
-            {"task": task['title'], "completed": task['completed'], "username": user_name}
+            {"task": task['title'], "completed": task['completed'],
+             "username": user_name}
             for task in tasks
         ]
     }
